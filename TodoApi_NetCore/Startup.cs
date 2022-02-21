@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using TodoApi_NetCore.Models;
 
 namespace TodoApi_NetCore {
     public class Startup {
@@ -24,17 +26,13 @@ namespace TodoApi_NetCore {
         public void ConfigureServices(IServiceCollection services) {
 
             services.AddControllers();
-            services.AddSwaggerGen(c => {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoApi_NetCore", Version = "v1" });
-            });
+            services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi_NetCore v1"));
             }
 
             app.UseHttpsRedirection();
